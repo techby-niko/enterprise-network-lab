@@ -1,13 +1,15 @@
-Current configuration : 1817 bytes
+Current configuration : 2229 bytes
 !
 version 15.1
 no service timestamps log datetime msec
 no service timestamps debug datetime msec
-no service password-encryption
+service password-encryption
 !
 hostname R1
 !
 !
+!
+enable secret 5 $1$mERr$QukvzoDtCHw/4gO/iP1Jw/
 !
 !
 ip dhcp excluded-address 192.168.10.1 192.168.10.20
@@ -34,6 +36,8 @@ no ipv6 cef
 !
 !
 !
+username admin privilege 15 secret 5 $1$mERr$/tMvSgQmXNDIBv2m3tZg9.
+!
 !
 license udi pid CISCO2911/K9 sn FTX1524YMAV-
 !
@@ -47,6 +51,9 @@ license udi pid CISCO2911/K9 sn FTX1524YMAV-
 !
 !
 !
+ip ssh version 2
+no ip domain-lookup
+ip domain-name lab.local
 !
 !
 spanning-tree mode pvst
@@ -104,17 +111,24 @@ ip access-list extended GUEST_RESTRICTIONS
  deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
  deny ip 192.168.30.0 0.0.0.255 192.168.99.0 0.0.0.255
  permit ip 192.168.30.0 0.0.0.255 any
+ permit udp any any eq bootps
+ip access-list standard MGMT_ONLY
+ permit 192.168.99.0 0.0.0.255
 !
+banner motd ^COnly authorized personnel. All activities will be logged.^C
 !
 !
 !
 !
 line con 0
+ login local
 !
 line aux 0
 !
 line vty 0 4
- login
+ access-class MGMT_ONLY in
+ login local
+ transport input ssh
 !
 !
 !
