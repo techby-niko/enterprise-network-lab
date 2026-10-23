@@ -46,7 +46,7 @@ by a hardening phase with secure device management and Layer 2 security.
 After the guest ACL was applied, PC-GUEST could no longer obtain an
 address via DHCP. DHCP Discover messages are sent from 0.0.0.0, which
 did not match the ACL's permit for 192.168.30.0/24. Fixed by adding
-`permit udp any any eq bootps`. See `docs/test-results.md`.
+`permit udp any any eq 67`. See `docs/test-results.md`.
 
 ## Verification
 See `docs/test-results.md` for all test results.
